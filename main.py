@@ -1,0 +1,3 @@
+import rigidMasterAPI
+
+rigidMasterAPI.createUser()
