@@ -4,7 +4,7 @@ RigidHosting
 
 # Prerequisites
 
-- mongodb server
+- Download and Install [MongoDB Community Server](https://www.mongodb.com/download-center/community)
 
 - restore mongodump from mongodump folder
 
