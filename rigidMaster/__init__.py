@@ -1,4 +1,5 @@
 from .api.user import User
+from .api.server import Server, GameServer
 
     
 class API:
@@ -36,3 +37,12 @@ class API:
         user.login()
 
         return user
+
+    def createServer(self, server_name:str, owner:User):
+
+        game_server = GameServer("101", server_name, "India", owner)
+        game_server.createServer()
+
+        return game_server
+        
+        
