@@ -11,7 +11,7 @@ RigidHosting
 Open cmd:
 
 ```
-    mongorestore mongodump
+C:Users\<user-name->\Documents\GitHub\rigid-py> **mongorestore mongodump**
 ```
 
 # How to run?

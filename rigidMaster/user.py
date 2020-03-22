@@ -25,7 +25,7 @@ class User:
         """
 
         #get next id from database for user collection
-        nextSequence = RigidDBConnector("rigid","counter").findOne({"$and": [{"collectionName": "users", "columnName": "_id"}]})['sequenceValue'] + 1
+        nextSequence = RigidDBConnector("rigid","counter").findOne({"$and": [{"collectionName": "user", "columnName": "_id"}]})['sequenceValue'] + 1
 
         rigidDB = RigidDBConnector("rigid","user")
 
@@ -34,7 +34,7 @@ class User:
 
         #update the counter
 
-        RigidDBConnector("rigid","counter").update({"$and": [{"collectionName": "users", "columnName": "_id"}]},{"$inc": {"sequenceValue": 1}})
+        RigidDBConnector("rigid","counter").update({"$and": [{"collectionName": "user", "columnName": "_id"}]},{"$inc": {"sequenceValue": 1}})
 
 
         self.userRegistered = True
