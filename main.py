@@ -1,15 +1,11 @@
-from rigidMaster import API
+from rigidMaster import User, Server, GameServer
 
 class Main:
     def __init__(self):
 
-        rigidAPI = API()
-
-        my_user = rigidAPI.createUser("rigid_user","rigid_user@rigid.com")
-
-        my_server = rigidAPI.createServer("rigid Hosts India", my_user)
-
-        print(my_server.serverOwner.userName + " created " + my_server.serverName)
+        my_user = User("rigid_user","rigid_user@rigid.com")
+        my_user.register()
+        my_user.deployServer("hi","india")
 
 if (__name__ == "__main__"):
     main = Main()

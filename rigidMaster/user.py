@@ -1,3 +1,5 @@
+from .server import GameServer
+
 class User:
 
     userName = ""
@@ -7,7 +9,7 @@ class User:
 
     userObjectOK = False
 
-    def __init__(self, username, email):
+    def __init__(self, username:str, email:str):
 
         self.userName = username
         self.userEmail = email
@@ -34,4 +36,13 @@ class User:
         self.userAuthorized = True
 
         print(self.userName + " : " + self.userEmail + " logged in!")
+
+    def deployServer(self, server_name, location):
+        if self.userAuthorized != True:
+
+            print(self.userName + " not authorized to deploy Server!")
+            return
+
+        game_server = GameServer(server_name, location, self.userName)
+        game_server.createServer()
 
