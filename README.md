@@ -4,7 +4,7 @@ RigidHosting
 
 # How to run?
 
-The project should run fine if opened using VS Code. 
+The project should run fine if opened using **VS Code**. 
 
 Otherwise:
 
