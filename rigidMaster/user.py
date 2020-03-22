@@ -1,4 +1,6 @@
 from .server import GameServer
+from .db import RigidDBConnector
+import json
 
 class User:
 
@@ -22,6 +24,19 @@ class User:
             Registers the object
         """
 
+        #get next id from database for user collection
+        nextSequence = RigidDBConnector("rigid","counter").findOne({"$and": [{"collectionName": "users", "columnName": "_id"}]})['sequenceValue'] + 1
+
+        rigidDB = RigidDBConnector("rigid","user")
+
+        #insert new user into database
+        rigidDB.insert({'_id': nextSequence, 'userName': self.userName, 'userEmail': self.userEmail})
+
+        #update the counter
+
+        RigidDBConnector("rigid","counter").update({"$and": [{"collectionName": "users", "columnName": "_id"}]},{"$inc": {"sequenceValue": 1}})
+
+
         self.userRegistered = True
 
         print(self.userName + " : " + self.userEmail + " registered!")
@@ -39,13 +54,19 @@ class User:
         print(self.userName + " : " + self.userEmail + " logged in!")
 
     def deployServer(self, server_name:str, location:str):
+        """deploys server in a given location
+        
+        Arguments:
+            server_name {str} -- Name of the server to be deployed
+            location {str} -- Location to be deployed
+        """
         if self.userAuthorized != True:
 
             print(self.userName + " not authorized to deploy Server!")
             return
 
         game_server = GameServer(server_name, location, self.userName)
-        game_server.createServer()
+        game_server.deploy()
 
         self.userServers.append(game_server)
 

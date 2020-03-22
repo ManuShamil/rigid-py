@@ -23,7 +23,7 @@ class Server:
         self.serverLocation = loc
         self.serverOwner = owner
 
-    def createServer(self):
+    def deploy(self):
 
         print(self.serverName + " created.")
 
@@ -32,6 +32,3 @@ class GameServer(Server):
 
     def __init__(self, name:str, loc:str, owner:str):
         Server.__init__(self, name, loc, owner)
-    
-    
-    
