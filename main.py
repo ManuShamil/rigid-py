@@ -5,7 +5,7 @@ class Main:
 
         rigidAPI = API()
 
-        my_user = rigidAPI.createUser("manu_shamil","manusshamil@gmail.com")
+        my_user = rigidAPI.createUser("rigid_user","rigid_user@rigid.com")
 
 if (__name__ == "__main__"):
     main = Main()
