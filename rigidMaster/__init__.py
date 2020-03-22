@@ -1,4 +1,4 @@
-from .api import User
+from .api.user import User
 
     
 class API:
