@@ -8,6 +8,7 @@ class User:
     userRegistered = False
 
     userObjectOK = False
+    userServers = []
 
     def __init__(self, username:str, email:str):
 
@@ -37,7 +38,7 @@ class User:
 
         print(self.userName + " : " + self.userEmail + " logged in!")
 
-    def deployServer(self, server_name, location):
+    def deployServer(self, server_name:str, location:str):
         if self.userAuthorized != True:
 
             print(self.userName + " not authorized to deploy Server!")
@@ -45,4 +46,6 @@ class User:
 
         game_server = GameServer(server_name, location, self.userName)
         game_server.createServer()
+
+        self.userServers.append(game_server)
 
