@@ -5,7 +5,7 @@ class Main:
 
         my_user = User("rigid_user","rigid_user@rigid.com","rigid123")
         #my_user.register()
-        my_user.login("rigid123")
+        my_user.login("rigid123") #login
 
 if (__name__ == "__main__"):
     main = Main()
