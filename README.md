@@ -26,3 +26,11 @@ Otherwise:
     Scripts\activate.bat
     py main.py
 ```
+
+# Connecting to Public Dev Database from MongoCompass
+
+For connection string use:
+
+```
+mongodb://13.235.17.132:27017/
+```
