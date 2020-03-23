@@ -11,7 +11,7 @@ class RigidDBConnector:
 
 
     def __init__(self, db_name, collection_name):
-        self.host = "localhost"
+        self.host = "13.235.17.132"
         self.port = "27017"
         
         self.databaseName = db_name
