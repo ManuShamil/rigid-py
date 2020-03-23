@@ -7,7 +7,7 @@ class Main:
         my_user.register()
         my_user.login("rigid123") #login
 
-        my_user.deployServer("Arma II")
+        my_user.deployServer("Rigid Custom Game Server")
 
         print(my_user.__dict__)
 
