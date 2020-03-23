@@ -4,7 +4,7 @@ import json
 import bcrypt
 
 class User:
-
+    userID = ""
     userName = ""
     userEmail = ""
     userHashedPassword = ""
@@ -41,26 +41,31 @@ class User:
         rigidDB = RigidDBConnector("rigid","user")
 
         #insert new user into database
-        rigidDB.insert({'_id': nextSequence, 'userName': self.userName, 'userEmail': self.userEmail, 'userHashedPassword': self.userHashedPassword})
+        rigidDB.insert({'_id': int(nextSequence), 'userName': self.userName, 'userEmail': self.userEmail, 'userHashedPassword': self.userHashedPassword})
 
         #update the counter
 
         RigidDBConnector("rigid","counter").update({"$and": [{"collectionName": "user", "columnName": "_id"}]},{"$inc": {"sequenceValue": 1}})
 
 
+        self.userID = nextSequence #nextSequence is the id of the user just inserted
         self.userRegistered = True
 
         print(self.userName + " : " + self.userEmail + " registered!")
 
 
     def login(self, password:str):
+        """Logs in the User and returns Authorized Object
+        
+        Arguments:
+            password {str} -- Password of the user
         """
-            Logs in the User and returns Authorized Object
-        """
-        hashedPassword = RigidDBConnector("rigid","user").findOne({ "$or": [{"userName": self.userName}, {"userEmail": self.userEmail}]})['userHashedPassword']
+        userData = RigidDBConnector("rigid","user").findOne({ "$or": [{"userName": self.userName}, {"userEmail": self.userEmail}]})
 
-        if bcrypt.checkpw(password.encode('utf-8'), hashedPassword):
-            self.userHashedPassword = hashedPassword
+        if bcrypt.checkpw(password.encode('utf-8'), userData['userHashedPassword']):
+            self.userHashedPassword =  userData['userHashedPassword']
+
+            self.userID = int(userData['_id'])
 
             self.userAuthorized = True
             
@@ -70,7 +75,7 @@ class User:
             
             print("{0} could be not logged in".format(self.userName))
 
-    def deployServer(self, server_name:str, location:str):
+    def deployServer(self, server_name:str):
         """deploys server in a given location
         
         Arguments:
@@ -82,8 +87,11 @@ class User:
             print(self.userName + " not authorized to deploy Server!")
             return
 
-        game_server = GameServer(server_name, location, self.userName)
+        game_server = GameServer(server_name, self.userName)
         game_server.deploy()
 
         self.userServers.append(game_server)
+
+        RigidDBConnector('rigid','user').update({"$or": [{"userName": self.userName}, {"userEmail": self.userEmail}]}, { "$push": {"userServers": game_server.toJSON()}})
+
 

@@ -7,5 +7,9 @@ class Main:
         my_user.register()
         my_user.login("rigid123") #login
 
+        my_user.deployServer("Arma II")
+
+        print(my_user.__dict__)
+
 if (__name__ == "__main__"):
     main = Main()
