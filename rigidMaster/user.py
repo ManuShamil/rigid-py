@@ -1,21 +1,25 @@
 from .server import GameServer
 from .db import RigidDBConnector
 import json
+import bcrypt
 
 class User:
 
     userName = ""
     userEmail = ""
+    userHashedPassword = ""
+
     userAuthorized = False
     userRegistered = False
 
     userObjectOK = False
     userServers = []
 
-    def __init__(self, username:str, email:str):
+    def __init__(self, username:str, email:str, password:str):
 
         self.userName = username
         self.userEmail = email
+        self.userHashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
         self.userObjectOK = True
 
@@ -30,7 +34,7 @@ class User:
         rigidDB = RigidDBConnector("rigid","user")
 
         #insert new user into database
-        rigidDB.insert({'_id': nextSequence, 'userName': self.userName, 'userEmail': self.userEmail})
+        rigidDB.insert({'_id': nextSequence, 'userName': self.userName, 'userEmail': self.userEmail, 'userHashedPassword': self.userHashedPassword})
 
         #update the counter
 
@@ -41,17 +45,21 @@ class User:
 
         print(self.userName + " : " + self.userEmail + " registered!")
 
-        self.login()
 
-
-    def login(self):
+    def login(self, password:str):
         """
             Logs in the User and returns Authorized Object
         """
+        hashedPassword = RigidDBConnector("rigid","user").findOne({ "$or": [{"userName": self.userName}, {"userEmail": self.userEmail}]})['userHashedPassword']
 
-        self.userAuthorized = True
+        if bcrypt.checkpw(password.encode('utf-8'), hashedPassword):
+            self.userAuthorized = True
 
-        print(self.userName + " : " + self.userEmail + " logged in!")
+            print("{0} succesfully logged in!".format(self.userName))
+        else:
+            self.userAuthorized = False
+            
+            print("{0} could be not logged in".format(self.userName))
 
     def deployServer(self, server_name:str, location:str):
         """deploys server in a given location
