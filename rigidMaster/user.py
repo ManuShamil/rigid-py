@@ -53,8 +53,10 @@ class User:
         hashedPassword = RigidDBConnector("rigid","user").findOne({ "$or": [{"userName": self.userName}, {"userEmail": self.userEmail}]})['userHashedPassword']
 
         if bcrypt.checkpw(password.encode('utf-8'), hashedPassword):
-            self.userAuthorized = True
+            self.userHashedPassword = hashedPassword
 
+            self.userAuthorized = True
+            
             print("{0} succesfully logged in!".format(self.userName))
         else:
             self.userAuthorized = False
