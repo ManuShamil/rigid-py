@@ -28,6 +28,13 @@ class User:
             Registers the object
         """
 
+        #check if username/email already exists in database
+        duplicate = RigidDBConnector("rigid","user").findOne({"$or": [{"userName": self.userName}, {'userEmail': self.userEmail}]})
+        if (duplicate != None):
+            print("{0} : {1} already exists in database!".format(self.userName, self.userEmail))
+
+            return
+
         #get next id from database for user collection
         nextSequence = RigidDBConnector("rigid","counter").findOne({"$and": [{"collectionName": "user", "columnName": "_id"}]})['sequenceValue'] + 1
 
