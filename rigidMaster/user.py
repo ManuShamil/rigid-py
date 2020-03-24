@@ -125,11 +125,15 @@ class User:
             })
 
         if userData == None:
-            
+
             print("User does not exist in Database!")
-            
             return
 
+        if "isBanned" in userData:
+            if userData['isBanned'] is True:
+
+                print("You have been restricted from logging in. Please contact customer support!")
+                return
 
         if bcrypt.checkpw(password.encode('utf-8'), userData['userHashedPassword']):
             self.userHashedPassword =  userData['userHashedPassword']
@@ -138,13 +142,6 @@ class User:
             self.userName = str(userData['userName'])
             self.userEmail = str(userData['userEmail'])
             self.userServers = userData['userServers']
-
-
-            """
-            if(userData['isBanned']==True):
-                print("You have been banned ! please contact your admin")
-                Main()
-            """
 
             self.userAuthorized = True
 
@@ -216,8 +213,6 @@ class User:
 class Admin(User):
     adminID = ""
     adminAuthorized = False
-    banUser=""
-    banEmail=""
 
     def __init__(self, username:str, email:str):
         User.__init__(self, username, email)
@@ -253,23 +248,23 @@ class Admin(User):
         self.userName=username
 
         if (self.adminAuthorized != True):
-            print("User does not privilege to perform this action")
+            print("User need to be logged in to perform ban")
             return
 
-        """
+        
         RigidDBConnector('rigid','user').update(
             {
                "userName":  username
             },
             {
-                "$push": {
-                    "isBanned": TRUE
+                "$set": {
+                    "isBanned": True
                 }
             }
         )
-        if()
+
         print("{0} is banned!".format(self.userName))
-        """
+        
     
     def unban(self,username):
         self.userName=username
@@ -278,20 +273,20 @@ class Admin(User):
             print("User does not privilege to perform this action")
             return
 
-        """
+        
         RigidDBConnector('rigid','user').update(
             {
                "userName":  username
             },
             {
-                "$push": {
-                    "isBanned": FALSE
+                "$set": {
+                    "isBanned": False
                 }
             }
         )
-        if()
+ 
         print("{0} is unbanned!".format(self.userName))
-        """
+        
         
         
 
