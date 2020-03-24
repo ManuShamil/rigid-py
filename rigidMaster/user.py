@@ -112,6 +112,7 @@ class User:
         Arguments:
             password {str} -- Password of the user
         """
+
         userData = RigidDBConnector("rigid","user").findOne(
             { 
                 "$or": [
@@ -122,6 +123,13 @@ class User:
                     }
                 ]
             })
+
+        if userData == None:
+            
+            print("User does not exist in Database!")
+            
+            return
+
 
         if bcrypt.checkpw(password.encode('utf-8'), userData['userHashedPassword']):
             self.userHashedPassword =  userData['userHashedPassword']
@@ -151,10 +159,10 @@ class User:
             print(self.userName + " not authorized to deploy Server!")
             return
 
-        game_server = GameServer(server_name, self.userName)
+        game_server = GameServer(server_name, self.userID)
         game_server.deploy()
 
-        self.userServers.append(game_server)
+        self.userServers.append(game_server.serverID)
 
         RigidDBConnector('rigid','user').update(
             {
@@ -167,10 +175,12 @@ class User:
                 ]
             },{
                 "$push": {
-                    "userServers": game_server.toJSON()
+                    "userServers": game_server.serverID
                 }
             }
         )
+
+
 
 
 class Admin(User):

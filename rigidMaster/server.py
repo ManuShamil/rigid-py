@@ -6,12 +6,12 @@ from .db import RigidDBConnector
 class Server:
     serverID = ""
     serverName = ""
-    serverOwner = ""
+    serverOwnerID = ""
 
-    def __init__(self, name:str, owner:str):
+    def __init__(self, name:str, owner:int):
 
         self.serverName = name
-        self.serverOwner = owner
+        self.serverOwnerID = owner
 
     def deploy(self):
         rigidDB = RigidDBConnector('rigid','server')
@@ -29,7 +29,7 @@ class Server:
             { 
                 "_id": int(nextSequence),
                 "serverName": self.serverName,
-                "serverOwner": self.serverOwner
+                "serverOwnerID": self.serverOwnerID
             }
         )
 
