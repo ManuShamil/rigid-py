@@ -15,11 +15,10 @@ class User:
     userObjectOK = False
     userServers = []
 
-    def __init__(self, username:str, email:str, password:str):
+    def __init__(self, username:str, email:str):
 
         self.userName = username
         self.userEmail = email
-        self.userHashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
         self.userObjectOK = True
 
@@ -66,6 +65,8 @@ class User:
             self.userHashedPassword =  userData['userHashedPassword']
 
             self.userID = int(userData['_id'])
+            self.userName = str(userData['userName'])
+            self.userEmail = str(userData['userEmail'])
 
             self.userAuthorized = True
             
@@ -93,5 +94,40 @@ class User:
         self.userServers.append(game_server)
 
         RigidDBConnector('rigid','user').update({"$or": [{"userName": self.userName}, {"userEmail": self.userEmail}]}, { "$push": {"userServers": game_server.toJSON()}})
+
+
+class Admin(User):
+    adminID = ""
+    adminAuthorized = False
+
+    def __init__(self, username:str, email:str):
+        User.__init__(self, username, email)
+
+    def login(self, password):
+        User.login(self, password) #login as normal user
+
+        if (self.userAuthorized == True): #check if the last login attempt was succesful
+
+            AdminData = RigidDBConnector('rigid','admin').findOne({ "userID": self.userID})
+            
+            isAdmin = Admin != None
+
+            if isAdmin:
+                self.adminID = AdminData['_id']
+
+                self.adminAuthorized = True
+
+                print("{0} succesfully logged in as Admin".format(self.userName))
+            
+            else:
+
+                print("{0} could not be logged in as Admin!".format(self.userName))
+        else:
+
+            print("{0} could not be logged in!".format(self.userName))
+
+
+
+            
 
 
