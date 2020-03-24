@@ -209,6 +209,8 @@ class User:
 class Admin(User):
     adminID = ""
     adminAuthorized = False
+    banUser=""
+    banEmail=""
 
     def __init__(self, username:str, email:str):
         User.__init__(self, username, email)
@@ -239,6 +241,27 @@ class Admin(User):
         else:
 
             print("{0} could not be logged in!".format(self.userName))
+
+    def ban(self,username):
+
+        if (self.adminAuthorized != True):
+            print("User does not have ban privileges")
+            return
+
+        """
+        RigidDBConnector('rigid','user').update(
+            {
+               "userName":  username
+            },
+            {
+                "$push": {
+                    "isBanned": TRUE
+                }
+            }
+        )
+        """
+        
+        
 
 
 
