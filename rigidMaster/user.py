@@ -139,8 +139,15 @@ class User:
             self.userEmail = str(userData['userEmail'])
             self.userServers = userData['userServers']
 
+
+            """
+            if(userData['isBanned']==True):
+                print("You have been banned ! please contact your admin")
+                Main()
+            """
+
             self.userAuthorized = True
-            
+
             print("{0} succesfully logged in!".format(self.userName))
         else:
             self.userAuthorized = False
@@ -243,9 +250,10 @@ class Admin(User):
             print("{0} could not be logged in!".format(self.userName))
 
     def ban(self,username):
+        self.userName=username
 
         if (self.adminAuthorized != True):
-            print("User does not have ban privileges")
+            print("User does not privilege to perform this action")
             return
 
         """
@@ -259,6 +267,30 @@ class Admin(User):
                 }
             }
         )
+        if()
+        print("{0} is banned!".format(self.userName))
+        """
+    
+    def unban(self,username):
+        self.userName=username
+
+        if (self.adminAuthorized != True):
+            print("User does not privilege to perform this action")
+            return
+
+        """
+        RigidDBConnector('rigid','user').update(
+            {
+               "userName":  username
+            },
+            {
+                "$push": {
+                    "isBanned": FALSE
+                }
+            }
+        )
+        if()
+        print("{0} is unbanned!".format(self.userName))
         """
         
         
