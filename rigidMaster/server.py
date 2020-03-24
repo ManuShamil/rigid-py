@@ -16,11 +16,38 @@ class Server:
     def deploy(self):
         rigidDB = RigidDBConnector('rigid','server')
 
-        nextSequence = RigidDBConnector("rigid","counter").findOne({"$and": [{"collectionName": "server", "columnName": "_id"}]})['sequenceValue'] + 1
+        nextSequence = RigidDBConnector("rigid","counter").findOne(
+            {
+                "$and": [
+                    {"collectionName": "server"},
+                    { "columnName": "_id"}
+                ]
+            }
+        )['sequenceValue'] + 1
 
-        rigidDB.insert({ "_id": int(nextSequence), "serverName": self.serverName, "serverOwner": self.serverOwner})
+        rigidDB.insert(
+            { 
+                "_id": int(nextSequence),
+                "serverName": self.serverName,
+                "serverOwner": self.serverOwner
+            }
+        )
 
-        RigidDBConnector("rigid","counter").update({"$and": [{"collectionName": "server", "columnName": "_id"}]},{"$inc": {"sequenceValue": 1}})
+        RigidDBConnector("rigid","counter").update(
+            {
+                "$and": [
+                    {
+                        "collectionName": "server"
+                    },
+                    {
+                         "columnName": "_id"
+                    }
+                ]
+            },{
+                "$inc": {
+                    "sequenceValue": 1
+                }
+            })
 
         self.serverID = nextSequence
 
