@@ -168,22 +168,6 @@ class User:
 
         self.userServers.append(game_server.serverID)
 
-        RigidDBConnector('rigid','user').update(
-            {
-                "$or": [
-                    {
-                        "userName": self.userName
-                    },{
-                        "userEmail": self.userEmail
-                    }
-                ]
-            },{
-                "$push": {
-                    "userServers": game_server.serverID
-                }
-            }
-        )
-    
     def displayServers(self):
 
         if self.userAuthorized != True:

@@ -16,6 +16,7 @@ class Server:
     def deploy(self):
         rigidDB = RigidDBConnector('rigid','server')
 
+        #get counter 
         nextSequence = RigidDBConnector("rigid","counter").findOne(
             {
                 "$and": [
@@ -25,6 +26,7 @@ class Server:
             }
         )['sequenceValue'] + 1
 
+        #insert server into database
         rigidDB.insert(
             { 
                 "_id": int(nextSequence),
@@ -33,6 +35,7 @@ class Server:
             }
         )
 
+        #update the counter
         RigidDBConnector("rigid","counter").update(
             {
                 "$and": [
@@ -49,7 +52,20 @@ class Server:
                 }
             })
 
+        
         self.serverID = nextSequence
+
+        #update user linked to the deployed server
+        RigidDBConnector('rigid','user').update(
+            {
+                "_id": self.serverOwnerID
+            },{
+                "$push": {
+                    "userServers": self.serverID
+                }
+            }
+        )
+    
 
         print(self.serverName + " created.")
 
