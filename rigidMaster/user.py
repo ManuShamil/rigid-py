@@ -2,6 +2,7 @@ from .server import GameServer
 from .db import RigidDBConnector
 import json
 import bcrypt
+from tabulate import tabulate
 
 class User:
     userID = ""
@@ -181,18 +182,11 @@ class User:
                 "serverOwnerID": self.userID
             }
         )
-
         serverList = []
-
         for x in myServers:
-            
-            serverList.append(x)
-
-            print(x)
-
-        return serverList
-
-
+            serverList.append([x["_id"],x["serverName"],x["serverOwnerID"]])
+        print(tabulate((serverList),headers=["ID","Server Name","Server Owner ID"], tablefmt="pretty"))
+        return myServers
 
 class Admin(User):
     adminID = ""
