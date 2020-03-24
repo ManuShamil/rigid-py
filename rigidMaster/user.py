@@ -179,7 +179,30 @@ class User:
                 }
             }
         )
+    
+    def displayServers(self):
 
+        if self.userAuthorized != True:
+            
+            print('User not logged into retrieve server list.')
+            
+            return
+
+        myServers = RigidDBConnector('rigid','server').findAll(
+            {
+                "serverOwnerID": self.userID
+            }
+        )
+
+        serverList = []
+
+        for x in myServers:
+            
+            serverList.append(x)
+
+            print(x)
+
+        return serverList
 
 
 

@@ -37,6 +37,12 @@ class RigidDBConnector:
 
         return self.client[self.databaseName][self.collectionName].insert_one(document)
 
+    def findAll(self, query, projection = {}):
+        if self.isConnected != True:
+            return False    #if connection didn't succeed, do not proceed.
+
+        return self.client[self.databaseName][self.collectionName].find(query)
+
     def findOne(self, query, projection = {}):
         if self.isConnected != True:
             return False
