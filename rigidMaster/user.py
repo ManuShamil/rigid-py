@@ -182,10 +182,14 @@ class User:
                 "serverOwnerID": self.userID
             }
         )
+
         serverList = []
+
         for x in myServers:
             serverList.append([x["_id"],x["serverName"],x["serverOwnerID"]])
+
         print(tabulate((serverList),headers=["ID","Server Name","Server Owner ID"], tablefmt="pretty"))
+        
         return myServers
 
 class Admin(User):
